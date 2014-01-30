@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css bootstrap.min.css">
+  <!-- jQuery -->
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    h1 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 20px;
+    }
+  </style>
+
+</head>
+<body>
+  
+  <div class="container">
+    <h1>Example using jQuery to get a resoure from the server</h1>
+    <div id="post">
+      <h3 class="title"></h3>
+      <p class="author text-muted"></p>
+      <p> Content ... </p>     
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $.getJSON("/api/posts/65.json", function(data) {
+      $('#post .title').text(data.title);
+      $('#post .author').text(data.author);
+    });
+  </script>
+
+</body>
+</html>
