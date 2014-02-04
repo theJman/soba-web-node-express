@@ -4,42 +4,134 @@
   <title>Homework</title>
 
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css bootstrap.min.css">
+  <link href="bootstrap.css" rel="stylesheet">
   <!-- jQuery -->
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
   <!-- Latest compiled and minified JavaScript -->
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+  <script src="/underscore.js"></script>
 
   <style type="text/css">
     h1 {
       border-bottom: 1px solid #ddd;
       padding-bottom: 20px;
     }
+    #container{
+      margin-right: 10%;
+      margin-left: 10%;
+    }
+    .post {
+      border-radius: 5px;
+    }
   </style>
 
 </head>
 <body>
-  
-  <div class="container">
-    <h1>Example using jQuery to get a resoure from the server</h1>
-    <div id="post">
-      <h3 class="title"></h3>
-      <p class="author text-muted"></p>
-      <p> Content ... </p>     
-    </div>
+  <nav class="navbar navbar-default" role="navigation">
+    <a class="navbar-brand" href="#">Jeremy's Blog</a>
+  </nav>
+  <div id="container">
+    <!--where html for posts will go-->
   </div>
+
+  <script type="text/template" id="posts-template">
+    <div class="post jumbotron" id="<%= pid %>">
+      <h3> <%= title %> </h3>
+      <span> <%= author %> </span>
+      <p> <%= body %> </p>
+      <button type="button" class="btn btn-default commentLink"> Comments </button>
+      <div class="commentsdiv"></div>
+    </div>
+  </script>
+  <script type="text/template" id="comments-template">
+    <p class="comment well"> <%= body %> </p>
+
+  </script>
+
 
   <script type="text/javascript">
     // Modify this example code to make a request to your api, eg:
     // /api/posts OR /api/posts/1 OR /api/posts/1/comments
-    
+    //var _ = require('underscore');
+    $.getJSON("/api/posts/", function(data) {
+      _.each(data, function(post){
+        //put posts on the page
 
-    /*
-    $.getJSON("/api/posts/65.json", function(data) {
+          var postTemplate = $("#posts-template").html();
+          $('#container').append(_.template(postTemplate,{
+            title: post.title,
+            author: post.author,
+            body: post.body,
+            pid: post.id 
+          }));
+        
+        var reset = function(){
+         // var postTemplate = $("#posts-template").html();
+         console.log('reset');
+          $("#"+post.id).html(_.template(postTemplate,{
+            title: post.title,
+            author: post.author,
+            body: post.body,
+            pid: post.id 
+          }));
+        };
+        //reset();
+/*
+        $("#"+post.id+" .commentLink").click(function() {
+
+          $(  "#"+post.id+" .commentsdiv").toggle(function() {
+            alert( "First handler for .toggle() called." );
+          }, function() {
+            alert( "Second handler for .toggle() called." );
+          });
+/*
+          $( "#"+post.id ).toggle( "slow", function() {
+            
+            $.getJSON("/api/posts/"+post.id+"/comments",function(comments){
+              _.each(comments, function(comm){
+                $("#"+post.id).append(_.template($("#comments-template").html(),{
+                  body: comm.body
+                }));
+              });
+
+          });
+        
+        });
+*/
+
+        $("#"+post.id+" .commentLink").click('event',function(evt){
+            console.log('yay');
+            //$("#"+post.id).append("<h5> Comments </h5>");
+            $.getJSON("/api/posts/"+post.id+"/comments",function(comments){
+              _.each(comments, function(comm){
+                $("#"+post.id +" .commentsdiv").append(_.template($("#comments-template").html(),{
+                  body: comm.body
+                }));
+              });
+            });
+            //$("#"+post.id).append("<a class=\"comment-close\"> Close comments </a>");
+
+        });
+        $(".comment").click('custom-event', function(evt){
+          //reset();
+        });
+        /*
+        $("#"+post.id+" .commentLink").toggle(function() {
+          console.log( "First handler for .toggle() called." );
+        }, function() {
+          console.log( "Second handler for .toggle() called." );
+        });
+*/
+
+      });
+     /* 
       $('#post .title').text(data.title);
       $('#post .author').text(data.author);
+      $('#post .body').text(data.body);
+      */
     });
-    */
+//});
+    
 
   </script>
 

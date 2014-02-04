@@ -1,7 +1,7 @@
 
 // Sample data
 // Source: https://news.ycombinator.com
-
+var _ = require('underscore');
 var posts = [
   {
     id: 1,
@@ -48,3 +48,25 @@ var posts = [
 ];
 
 // You can implement your module.exports here
+
+module.exports = {
+  getAll: function(){
+    return posts;
+  },
+  getPost: function(id){
+    return posts[id];
+  },
+  addPost: function(post){
+    post[post.length] = post;
+  },
+  deletePost: function(id){
+    posts = _.reject(posts,function(pst){
+      return pst.id == id;
+    });
+  }
+
+}
+
+
+
+

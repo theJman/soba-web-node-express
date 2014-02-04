@@ -1,7 +1,7 @@
 
 // Sample data
 // Source: https://news.ycombinator.com
-
+var _ = require('underscore');
 var comments = [
   {
     id: 1,
@@ -91,3 +91,21 @@ var comments = [
 ];
 
 // You can implement your module.exports here
+module.exports = {
+  getAll: function(){
+    return comments;
+  },
+  getComment: function(id){
+    return comments[id];
+  },
+  getAllForPost: function(pid){
+    console.log('method called');
+    return _.select(comments, function(comment) {
+      return comment.postid == pid;
+    });
+  }
+
+
+
+}
+
